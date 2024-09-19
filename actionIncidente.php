@@ -3,7 +3,7 @@
 <?php
 
     //Bloco para declaração das variáveis
-    $fotoProduto = $nomeProduto= $descricaoProduto = $categoriaProduto = $valorProduto = $condicaoProduto = "";
+    $fotoincidente = $nomeProduto= $descricaoProduto = $categoriaProduto = $valorProduto = $condicaoProduto = "";
     $dataCadastroProduto = date('Y-m-d'); //Utiliza a função date para pegar a data no formato AAAA/MM/DD
     $horaCadastroProduto = date('H:i:s'); //Utiliza a função date para pegar as horas no formato HH:MM:SS
     $erroPreenchimento = false; //Variável para controle de erros durante o preenchimento do formulário
@@ -91,8 +91,8 @@
         if(!$erroPreenchimento && !$erroUpload){
 
             //Cria a Query para realizar a inserção das informações na tabela Produtos
-            $inserirProduto = "INSERT INTO Produtos (fotoProduto, nomeProduto, descricaoProduto, categoriaProduto, valorProduto, condicaoProduto, dataCadastroProduto, horaCadastroProduto, statusProduto)
-                            VALUES ('$fotoProduto', '$nomeProduto', '$descricaoProduto', '$categoriaProduto', $valorProduto, '$condicaoProduto', '$dataCadastroProduto', '$horaCadastroProduto', 'disponivel')"; 
+            $inserirProduto = "INSERT INTO incidente (fotoincidente, idusuario, numerocomputador, laboratorio, categoria, descricao,dataincidente, 'status')
+                            VALUES ('$fotoincidente', '$idusuario', '$numerocomputador', '$laboratorio', $categoria, '$descricao', '$dataincidente', 'aberto')"; 
 
             //Inclui o arquivo para conexão com o Banco de Dados
             include("conexaoBD.php");
