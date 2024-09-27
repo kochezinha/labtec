@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Genérico</title>
 
-    <!-- Úlitima versão compilada e minimizada CSS -->
+    <!-- Última versão compilada e minimizada CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Última versão compilada JavaScript -->
@@ -23,13 +23,25 @@
         });
     </script>
 
+    <style>
+        body {
+            background: url('img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Branca com 80% de opacidade */
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+
 </head>
 <body>
 
     <!-- Container de Logotipo do Sistema -->
     <div class="container-fluid text-center">
         <a href="index.php" title="Retornar à Página Inicial">
-            <img src="img/logo.png" width="100">
+            <img src="img/ifpr.png" width="100">
         </a>
         <h1>LabTec - Manutenção dos Laboratórios do IFPR</h1>
     </div>

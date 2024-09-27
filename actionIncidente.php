@@ -1,155 +1,163 @@
 <?php include("header.php"); ?>
 
 <?php
+// Bloco para declaração das variáveis
+$fotoincidente = $nomeIncidente = $descricaoIncidente = $categoriaIncidente = $laboratorioIncidente = "";
+$numeroComputador = $statusIncidente = "";
+$dataCadastroIncidente = date('Y-m-d'); // Data no formato AAAA-MM-DD
+$horaCadastroIncidente = date('H:i:s'); // Horas no formato HH:MM:SS
+$erroPreenchimento = false; // Controle de erros
 
-    //Bloco para declaração das variáveis
-    $fotoincidente = $nomeProduto= $descricaoProduto = $categoriaProduto = $valorProduto = $condicaoProduto = "";
-    $dataCadastroProduto = date('Y-m-d'); //Utiliza a função date para pegar a data no formato AAAA/MM/DD
-    $horaCadastroProduto = date('H:i:s'); //Utiliza a função date para pegar as horas no formato HH:MM:SS
-    $erroPreenchimento = false; //Variável para controle de erros durante o preenchimento do formulário
+// Verifica o método de envio do FORM
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    //Verifica o método de envio do FORM
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        //Utiliza a função empty para verificar se o campo nomeProduto(form) está vazio
-        if(empty($_POST["nomeProduto"])){
-            echo "<div class='alert alert-warning text-center'>O campo <strong>NOME</strong> é obrigatório!</div>";
-            $erroPreenchimento = true; //Em caso de erro, a variável passa a ser verdadeira
-        } else{
-            $nomeProduto = filtrar_entrada($_POST["nomeProduto"]); //Caso não hajam erros, a variável PHP recebe o valor que foi preenchido no formulário
-        }
 
-        //Validação do campo descricaoProduto
-        if(empty($_POST["descricaoProduto"])){
-            echo "<div class='alert alert-warning text-center'>O campo <strong>DESCRIÇÃO</strong> é obrigatório!</div>";
-            $erroPreenchimento = true;
-        } else{
-            $descricaoProduto = filtrar_entrada($_POST["descricaoProduto"]);
-        }
+    // Validação do campo descricaoIncidente
+    if (empty($_POST["descricaoIncidente"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>DESCRIÇÃO</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $descricaoIncidente = filtrar_entrada($_POST["descricaoIncidente"]);
+    }
 
-        //Validação do campo categoriaProduto
-        if(empty($_POST["categoriaProduto"])){
-            echo "<div class='alert alert-warning text-center'>O campo <strong>CATEGORIA</strong> é obrigatório!</div>";
-            $erroPreenchimento = true;
-        } else{
-            $categoriaProduto = filtrar_entrada($_POST["categoriaProduto"]);
-        }
+      // Validação do campo dataIncidente
+      if (empty($_POST["dataIncidente"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>DATA DO INCIDENTE</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $dataIncidente = filtrar_entrada($_POST["dataIncidente"]);
+    }
 
-        //Validação do campo valorProduto
-        if(empty($_POST["valorProduto"])){
-            echo "<div class='alert alert-warning text-center'>O campo <strong>VALOR DO PRODUTO</strong> é obrigatório!</div>";
-            $erroPreenchimento = true;
-        } else{
-            $valorProduto = filtrar_entrada($_POST["valorProduto"]);
-        }
+    // Validação do campo categoriaIncidente
+    if (empty($_POST["categoriaIncidente"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>CATEGORIA</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $categoriaIncidente = filtrar_entrada($_POST["categoriaIncidente"]);
+    }
 
-        //Validação do campo condicaoProduto
-        if(empty($_POST["condicaoProduto"])){
-            $condicaoProduto = "Usado";
-        } else{
-            $condicaoProduto = "Novo";
-        }
+    // Validação do campo laboratorioIncidente
+    if (empty($_POST["laboratorioIncidente"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>LABORATÓRIO</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $laboratorioIncidente = filtrar_entrada($_POST["laboratorioIncidente"]);
+    }
 
-        //Início da validação da Foto do Usuário
-        $diretorio    = "img/"; //Define para qual diretório do sistema as imagens serão movidas
-        $fotoProduto  = $diretorio . basename($_FILES["fotoProduto"]["name"]); // img/ana.jpg
-        $erroUpload   = false; //Variável criada para verificar se houve sucesso no upload
-        $tipoDaImagem = strtolower(pathinfo($fotoProduto, PATHINFO_EXTENSION));  //Pega tipo do arquivo
+    // Validação do campo numeroComputador
+    if (empty($_POST["numeroComputador"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>NÚMERO DO COMPUTADOR</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $numeroComputador = filtrar_entrada($_POST["numeroComputador"]);
+    }
 
-        //Verifica se o tamanho da imagem é maior do que ZERO
-        if ($_FILES["fotoProduto"]["size"] != 0){ //Usa a propriedade "size" para verificar o tamanho 
+    // Validação do campo statusIncidente
+    if (empty($_POST["statusIncidente"])) {
+        echo "<div class='alert alert-warning text-center'>O campo <strong>STATUS</strong> é obrigatório!</div>";
+        $erroPreenchimento = true;
+    } else {
+        $statusIncidente = filtrar_entrada($_POST["statusIncidente"]);
+    }
 
-            if($_FILES["fotoProduto"]["size"] > 5000000){ //Verifica o tamanho em BYTES (5MB, nesse caso)
-                echo "<div class='alert alert-warning text-center'>A foto não pode ser <strong>maior</strong> do que 5MB!</div>";
-                $erroUpload = true;
-            }
+    // Início da validação da Foto do Usuário
+    $diretorio = "img/"; // Diretório para as imagens
+    $fotoIncidente = $diretorio . basename($_FILES["fotoIncidente"]["name"]); // img/ana.jpg
+    $erroUpload = false; // Controle de erro de upload
+    $tipoDaImagem = strtolower(pathinfo($fotoIncidente, PATHINFO_EXTENSION)); // Tipo do arquivo
 
-            //Cria o conjunto de imagens aceitos pelo campo foto do formulário 
-            if($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png" && $tipoDaImagem != "webp"){
-                echo "<div class='alert alert-warning text-center'>A foto precisa estar nos formatos <strong>JPG, JPEG, PNG ou WEBP</strong>!</div>";
-                $erroUpload = true;
-            }   
-
-            if($erroUpload){
-                echo "<div class='alert alert-warning text-center'>Erro ao tentar fazer o <strong>UPLOAD DA FOTO</strong>!</div>";
-                $erroUpload = true;
-            }
-            else{
-                //A função seguinte é responsável por mover o arquivo par ao diretório definido (img/)
-                if(!move_uploaded_file($_FILES["fotoProduto"]["tmp_name"], $fotoProduto)){
-                    echo "<div class='alert alert-warning text-center'>Erro ao tentar<strong>MOVER O ARQUIVO para o diretório $diretorio</strong>!</div>";
-                    $erroUpload = true;
-                }
-            }
-        }
-        else{
-            echo "<div class='alert alert-warning text-center'>Erro ao tentar fazer o <strong>UPLOAD DA FOTO</strong>!</div>";
+    // Verifica se o tamanho da imagem é maior do que ZERO
+    if ($_FILES["fotoIncidente"]["size"] != 0) {
+        if ($_FILES["fotoIncidente"]["size"] > 5000000) { // Limite de 5MB
+            echo "<div class='alert alert-warning text-center'>A foto não pode ser <strong>maior</strong> do que 5MB!</div>";
             $erroUpload = true;
         }
-        
-        //Se NÃO houver erro de preenchimento (caso a variável de controle esteja com o valor 'false')
-        if(!$erroPreenchimento && !$erroUpload){
 
-            //Cria a Query para realizar a inserção das informações na tabela Produtos
-            $inserirProduto = "INSERT INTO incidente (fotoincidente, idusuario, numerocomputador, laboratorio, categoria, descricao,dataincidente, 'status')
-                            VALUES ('$fotoincidente', '$idusuario', '$numerocomputador', '$laboratorio', $categoria, '$descricao', '$dataincidente', 'aberto')"; 
-
-            //Inclui o arquivo para conexão com o Banco de Dados
-            include("conexaoBD.php");
-
-            //Utiliza a função mysqli_query para executar a QUERY no Banco de Dados
-            if(mysqli_query($conn, $inserirProduto)){
-
-                echo "
-                    <div class='alert alert-success text-center'>Produto cadastrado com sucesso!</div>
-                    <div class='container mt-3'>
-                        <div class='container mt-3 text-center'>
-                            <img src='$fotoProduto' style='width: 150px;'>
-                        </div>
-                        <div class='table-responsive'>
-                            <table class='table'>
-                                <tr>
-                                    <th>NOME</th>
-                                    <td>$nomeProduto</td>
-                                </tr>
-                                <tr>
-                                    <th>DESCRIÇÃO</th>
-                                    <td>$descricaoProduto</td>
-                                </tr>
-                                <tr>
-                                    <th>CATEGORIA</th>
-                                    <td>$categoriaProduto</td>
-                                </tr>
-                                <tr>
-                                    <th>VALOR DO PRODUTO</th>
-                                    <td>$valorProduto</td>
-                                </tr>
-                                <tr>
-                                    <th>CONDIÇÃO</th>
-                                    <td>$condicaoProduto</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                ";
-            }
-            else{
-                echo "<div class='alert alert-danger text-center'>Erro ao tentar cadastrar produto!</div>" . mysqli_error($conn);
-                echo "<p>$inserirProduto</p>";
-            }
+        // Tipos de imagem aceitos
+        if ($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png" && $tipoDaImagem != "webp") {
+            echo "<div class='alert alert-warning text-center'>A foto precisa estar nos formatos <strong>JPG, JPEG, PNG ou WEBP</strong>!</div>";
+            $erroUpload = true;
         }
 
+        if (!$erroUpload) {
+            // Mover o arquivo para o diretório definido
+            if (!move_uploaded_file($_FILES["fotoIncidente"]["tmp_name"], $fotoIncidente)) {
+                echo "<div class='alert alert-warning text-center'>Erro ao tentar<strong>MOVER O ARQUIVO para o diretório $diretorio</strong>!</div>";
+                $erroUpload = true;
+            }
+        }
+    } else {
+        echo "<div class='alert alert-warning text-center'>Erro ao tentar fazer o <strong>UPLOAD DA FOTO</strong>!</div>";
+        $erroUpload = true;
     }
 
-    //Função para filtrar as entradas de dados do formulário para evitar SQL Injection
-    function filtrar_entrada($dado){
-        $dado = trim($dado); //Remove espaços desnecessários
-        $dado = stripslashes($dado); //Remove as barras invertidas
-        $dado = htmlspecialchars($dado); //Converte caracteres especiais em entidades HTML
+    // Se não houver erro de preenchimento ou upload
+    if (!$erroPreenchimento && !$erroUpload) {
+        // Cria a Query para inserção na tabela Incidentes
+        $inserirIncidente = "INSERT INTO incidente (fotoincidente, numeroComputador, laboratorio, categoria, descricao, dataIncidente, status, idUsuario)
+                             VALUES ('$fotoIncidente', '$numeroComputador', '$laboratorioIncidente', '$categoriaIncidente', '$descricaoIncidente', '$dataCadastroIncidente', '$statusIncidente', 3)"; 
 
-        return($dado); //Retorna o dado já filtrado
+        // Inclui o arquivo para conexão com o Banco de Dados
+        include("conexaoBD.php");
+
+        // Executa a QUERY no Banco de Dados
+        if (mysqli_query($conn, $inserirIncidente)) {
+            echo "
+                       <div class='alert alert-success text-center'>Incidente cadastrado com sucesso!</div>
+                <div class='container mt-3'>
+                    <div class='container mt-3 text-center'>
+                        <img src='$fotoIncidente' style='width: 150px;'>
+                    </div>
+                    <div class='table-responsive'>
+                        <table class='table'>
+                            <tr>
+                                <th>NOME</th>
+                                <td>$nomeIncidente</td>
+                            </tr>
+                            <tr>
+                                <th>DESCRIÇÃO</th>
+                                <td>$descricaoIncidente</td>
+                            </tr>
+                            <tr>
+                                <th>DATA DO INCIDENTE</th>
+                                <td>$dataIncidente</td>
+                            </tr>
+                            <tr>
+                                <th>NÚMERO DO COMPUTADOR</th>
+                                <td>$numeroComputador</td>
+                            </tr>
+                            <tr>
+                                <th>LABORATÓRIO</th>
+                                <td>$laboratorioIncidente</td>
+                            </tr>
+                            <tr>
+                                <th>CATEGORIA</th>
+                                <td>$categoriaIncidente</td>
+                            </tr>
+                            <tr>
+                                <th>STATUS</th>
+                                <td>$statusIncidente</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            ";
+        } else {
+            echo "<div class='alert alert-danger text-center'>Erro ao tentar cadastrar Incidente!</div>" . mysqli_error($conn);
+            echo "<p>$inserirIncidente</p>";
+        }
     }
+}
 
+// Função para filtrar as entradas de dados do formulário para evitar SQL Injection
+function filtrar_entrada($dado) {
+    $dado = trim($dado); // Remove espaços desnecessários
+    $dado = stripslashes($dado); // Remove as barras invertidas
+    $dado = htmlspecialchars($dado); // Converte caracteres especiais em entidades HTML
+
+    return $dado; // Retorna o dado filtrado
+}
 ?>
 
-<?php include("footer.php");?>
+<?php include("footer.php"); ?>
