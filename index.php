@@ -4,22 +4,24 @@
 
     <!-- Alerta para informar a quantidade de incidentes -->
     <?php
+
     include("conexaoBD.php");
 
-    // Contar total de incidentes
-    $resultado = mysqli_query($conn, "SELECT COUNT(*) as total FROM incidente");
-    $row = mysqli_fetch_assoc($resultado);
-    $totalIncidentes = $row['total'];
+        // Contar total de incidentes
+        $resultado = mysqli_query($conn, "SELECT COUNT(*) as total FROM incidente");
+        $row = mysqli_fetch_assoc($resultado);  
+        $totalIncidentes = $row['total'];
+        echo "<div class='alert alert-info text-center' style='width:50%; margin:auto;'>
+                Há <strong>$totalIncidentes</strong> incidentes cadastrados em nosso sistema!
+            </div>
+            <br>
+        ";
     ?>
-    <div class="alert alert-info text-center" style="width:50%; margin:auto;">
-        Há <strong><?php echo $totalIncidentes; ?></strong> incidentes cadastrados em nosso sistema!
-    </div>
-    <br>
-
     <!-- Formulário para aplicar filtros aos incidentes -->
     <form name="formFiltro" action="index.php" method="GET" style="width:50%; margin:auto;">
         <select class="form-select" name="filtroLaboratorio" required>
             <option value="todos">Visualizar todos os Laboratórios</option>
+            <option value="Lab 0">Lab 0</option>
             <option value="Lab 1">Lab 1</option>
             <option value="Lab 2">Lab 2</option>
             <option value="Lab 3">Lab 3</option>

@@ -9,7 +9,7 @@
                 <form action="actionIncidente.php" class="was-validated" method="POST" enctype="multipart/form-data">
                     
                     <div class="form-floating mb-3 mt-3">
-                        <input type="date" class="form-control" id="dataIncidente" name="dataIncidente" required>
+                        <input type="date" class="form-control" id="dataIncidente" name="dataIncidente" value="<?php echo date('Y-m-d');?>" required>
                         <label for="dataIncidente" class="form-label">Data do Incidente:</label>
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback"></div>
@@ -43,6 +43,7 @@
 
                     <div class="form-floating mb-3 mt-3">
                         <select class="form-select" id="laboratorioIncidente" name="laboratorioIncidente" required>
+                            <option value="Lab 0">Lab 0</option>
                             <option value="Lab 1">Lab 1</option>
                             <option value="Lab 2">Lab 2</option>
                             <option value="Lab 3">Lab 3</option>
